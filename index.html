@@ -3,110 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Research Portal</title>
+    <title>Student Research Hub</title>
     <style>
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --accent: #58a6ff;
+            --border: #30363d;
+        }
+
         body {
-            background-color: #0d1117;
-            color: #c9d1d9;
+            background-color: var(--bg);
+            color: white;
             font-family: 'Segoe UI', sans-serif;
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            overflow-x: hidden;
         }
 
         header {
-            width: 100%;
-            padding: 20px;
-            background: #161b22;
             text-align: center;
-            border-bottom: 2px solid #30363d;
+            padding: 2rem;
+            border-bottom: 1px solid var(--border);
+            background: var(--card);
         }
 
-        /* The Selection Menu */
-        .menu {
+        /* THE GRID LAYOUT */
+        .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
-            width: 90%;
-            max-width: 800px;
-            margin: 20px 0;
+            /* This creates the squares: repeat as many as fit, min 200px wide */
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .btn {
-            background: #21262d;
-            border: 1px solid #30363d;
-            color: #58a6ff;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            text-align: center;
-            transition: 0.3s;
-        }
-
-        .btn:hover {
-            background: #30363d;
-            border-color: #58a6ff;
-        }
-
-        /* The Game Display Window */
-        .game-display {
-            width: 90%;
-            max-width: 900px;
-            height: 600px;
-            background: #161b22;
-            border: 2px solid #30363d;
+        .game-card {
+            background: var(--card);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .placeholder-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            aspect-ratio: 1 / 1; /* FORCES IT TO BE A PERFECT SQUARE */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
             text-align: center;
-            z-index: -1;
+            padding: 10px;
         }
+
+        .game-card:hover {
+            transform: scale(1.05);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(88, 166, 255, 0.2);
+        }
+
+        .game-card i { font-size: 3rem; margin-bottom: 10px; }
+        .game-card h3 { margin: 0; font-size: 1.1rem; }
+
+        /* THE FULLSCREEN OVERLAY */
+        #overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: black;
+            display: none; /* Hidden by default */
+            z-index: 100;
+        }
+
+        #close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 101;
+            font-weight: bold;
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Project Portal v3.0</h1>
-        <p>Select a module to load simulation</p>
-    </header>
+<header>
+    <h1>Project Portal</h1>
+    <p>Select a simulation square to begin</p>
+</header>
 
-    <div class="menu">
-        <div class="btn" onclick="loadGame('https://play2048.co/')">Logic 2048</div>
-        <div class="btn" onclick="loadGame('https://hextris.io/')">Hextris</div>
-        <div class="btn" onclick="loadGame('https://v6p9d9t4.ssl.hwcdn.net/html/1453/index.html')">Slope</div>
-        <div class="btn" onclick="loadGame('https://mario.pixeljoint.com/')">Mario</div>
-        <div class="btn" onclick="loadGame('https://tane.us/snake/')">Snake</div>
+<div class="gallery">
+    <div class="game-card" onclick="openGame('https://play2048.co/')">
+        <i>🔢</i>
+        <h3>Logic 2048</h3>
     </div>
 
-    <div class="game-display">
-        <div class="placeholder-text">
-            <h2>Waiting for Selection...</h2>
-            <p>Click a button above to start.</p>
-        </div>
-        <iframe id="game-frame" src=""></iframe>
+    <div class="game-card" onclick="openGame('https://hextris.io/')">
+        <i>⬢</i>
+        <h3>Hextris</h3>
     </div>
 
-    <script>
-        // This function changes the "src" of the iframe when you click a button
-        function loadGame(url) {
-            document.getElementById('game-frame').src = url;
-        }
-    </script>
+    <div class="game-card" onclick="openGame('https://wayou.github.io/t-rex-runner/')">
+        <i>🦖</i>
+        <h3>Dino Run</h3>
+    </div>
+
+    <div class="game-card" onclick="openGame('https://tane.us/snake/')">
+        <i>🐍</i>
+        <h3>Snake</h3>
+    </div>
+
+    <div class="game-card" onclick="openGame('https://mathadventure1.github.io/sm64/sm64/index.html')">
+        <i>🍄</i>
+        <h3>Mario 64</h3>
+    </div>
+
+    <div class="game-card" onclick="openGame('https://classic.minecraft.net/')">
+        <i>⛏️</i>
+        <h3>Minecraft</h3>
+    </div>
+</div>
+
+<div id="overlay">
+    <button id="close-btn" onclick="closeGame()">CLOSE GAME</button>
+    <iframe id="game-frame" src=""></iframe>
+</div>
+
+<script>
+    function openGame(url) {
+        document.getElementById('game-frame').src = url;
+        document.getElementById('overlay').style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Prevents background scrolling
+    }
+
+    function closeGame() {
+        document.getElementById('game-frame').src = '';
+        document.getElementById('overlay').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+</script>
 
 </body>
 </html>
