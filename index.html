@@ -3,148 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Research Hub</title>
+    <title>Year 10 Advanced Math Revision</title>
     <style>
         :root {
-            --bg: #0d1117;
+            --math-blue: #2c3e50;
+            --bg-light: #fdfdfd;
+            --game-bg: #0d1117;
             --card: #161b22;
             --accent: #58a6ff;
-            --border: #30363d;
         }
 
-        body {
-            background-color: var(--bg);
-            color: white;
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            overflow-x: hidden;
-        }
+        body { font-family: 'Times New Roman', serif; background: var(--bg-light); margin: 0; padding: 0; color: #333; }
 
-        header {
-            text-align: center;
-            padding: 2rem;
-            border-bottom: 1px solid var(--border);
-            background: var(--card);
-        }
+        /* 1. MATH CAMOUFLAGE SECTION */
+        #math-page { padding: 50px 20px; text-align: center; display: block; }
+        .math-container { max-width: 600px; margin: auto; background: white; border: 1px solid #ccc; padding: 40px; box-shadow: 8px 8px 0px #eee; }
+        .math-input { padding: 10px; width: 80%; margin-bottom: 20px; border: 1px solid #aaa; }
+        .solve-btn { background: #eee; border: 1px solid #999; padding: 10px 30px; cursor: pointer; font-size: 1rem; }
+        .solve-btn:hover { background: #e0e0e0; }
 
-        /* THE GRID LAYOUT */
-        .gallery {
-            display: grid;
-            /* This creates the squares: repeat as many as fit, min 200px wide */
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .game-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            aspect-ratio: 1 / 1; /* FORCES IT TO BE A PERFECT SQUARE */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: 0.3s;
-            text-align: center;
-            padding: 10px;
-        }
-
-        .game-card:hover {
-            transform: scale(1.05);
-            border-color: var(--accent);
-            box-shadow: 0 0 20px rgba(88, 166, 255, 0.2);
-        }
-
-        .game-card i { font-size: 3rem; margin-bottom: 10px; }
-        .game-card h3 { margin: 0; font-size: 1.1rem; }
-
-        /* THE FULLSCREEN OVERLAY */
-        #overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: black;
+        /* 2. SECRET GAME GALLERY SECTION */
+        #game-gallery {
             display: none; /* Hidden by default */
-            z-index: 100;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--game-bg); color: white; overflow-y: auto; z-index: 100;
         }
-
-        #close-btn {
-            position: absolute;
-            top: 15px; right: 20px;
-            background: #ff4444;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 101;
-            font-weight: bold;
+        .gallery-header { padding: 20px; text-align: center; border-bottom: 1px solid #30363d; }
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px; max-width: 1000px; margin: 40px auto; padding: 0 20px;
         }
+        .square {
+            background: var(--card); border: 1px solid #30363d; aspect-ratio: 1/1;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border-radius: 12px; cursor: pointer; transition: 0.3s;
+        }
+        .square:hover { transform: scale(1.05); border-color: var(--accent); }
+        .square i { font-size: 3rem; margin-bottom: 10px; font-style: normal; }
 
+        /* 3. FULLSCREEN GAME PLAYER */
+        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; display: none; z-index: 200; }
         iframe { width: 100%; height: 100%; border: none; }
+        .panic-btn { position: absolute; top: 10px; right: 10px; background: #ff4444; color: white; border: none; padding: 10px; cursor: pointer; border-radius: 5px; z-index: 201; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Project Portal</h1>
-    <p>Select a simulation square to begin</p>
-</header>
-
-<div class="gallery">
-    <div class="game-card" onclick="openGame('https://play2048.co/')">
-        <i>🔢</i>
-        <h3>Logic 2048</h3>
+    <div id="math-page">
+        <div class="math-container">
+            <h1 style="color: var(--math-blue);">Unit 4: Advanced Calculus</h1>
+            <p>Verification Portal for Student ID: Y10-4492-B</p>
+            <p>Enter equation to verify (e.g., y = 2x + 5):</p>
+            <input type="text" class="math-input" placeholder="Enter function...">
+            <br>
+            <button class="solve-btn" onclick="openGallery()">Solve & Verify</button>
+        </div>
     </div>
 
-    <div class="game-card" onclick="openGame('https://hextris.io/')">
-        <i>⬢</i>
-        <h3>Hextris</h3>
+    <div id="game-gallery">
+        <div class="gallery-header">
+            <button onclick="closeGallery()" style="background: #333; color: white; border: none; padding: 10px; cursor: pointer; float: left;">← Back to Math</button>
+            <h2>Resource Repository</h2>
+        </div>
+        <div class="grid">
+            <div class="square" onclick="play('https://play2048.co/')"><i>🔢</i><h3>2048</h3></div>
+            <div class="square" onclick="play('https://hextris.io/')"><i>⬢</i><h3>Hextris</h3></div>
+            <div class="square" onclick="play('https://wayou.github.io/t-rex-runner/')"><i>🦖</i><h3>Dino Run</h3></div>
+            <div class="square" onclick="play('https://mathadventure1.github.io/sm64/sm64/index.html')"><i>🍄</i><h3>Mario 64</h3></div>
+            <div class="square" onclick="play('https://classic.minecraft.net/')"><i>⛏️</i><h3>Minecraft</h3></div>
+            <div class="square" onclick="play('https://tane.us/snake/')"><i>🐍</i><h3>Snake</h3></div>
+            <div class="square" onclick="play('https://v6p9d9t4.ssl.hwcdn.net/html/1453/index.html')"><i>⚪</i><h3>Slope</h3></div>
+        </div>
     </div>
 
-    <div class="game-card" onclick="openGame('https://wayou.github.io/t-rex-runner/')">
-        <i>🦖</i>
-        <h3>Dino Run</h3>
+    <div id="overlay">
+        <button class="panic-btn" onclick="panic()">PANIC (ESC)</button>
+        <iframe id="game-frame" src=""></iframe>
     </div>
 
-    <div class="game-card" onclick="openGame('https://tane.us/snake/')">
-        <i>🐍</i>
-        <h3>Snake</h3>
-    </div>
+    <script>
+        function openGallery() { document.getElementById('game-gallery').style.display = 'block'; }
+        function closeGallery() { document.getElementById('game-gallery').style.display = 'none'; }
+        
+        function play(url) {
+            document.getElementById('game-frame').src = url;
+            document.getElementById('overlay').style.display = 'block';
+        }
 
-    <div class="game-card" onclick="openGame('https://mathadventure1.github.io/sm64/sm64/index.html')">
-        <i>🍄</i>
-        <h3>Mario 64</h3>
-    </div>
+        function panic() {
+            document.getElementById('game-frame').src = '';
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('game-gallery').style.display = 'none'; // Hide gallery too!
+        }
 
-    <div class="game-card" onclick="openGame('https://classic.minecraft.net/')">
-        <i>⛏️</i>
-        <h3>Minecraft</h3>
-    </div>
-</div>
-
-<div id="overlay">
-    <button id="close-btn" onclick="closeGame()">CLOSE GAME</button>
-    <iframe id="game-frame" src=""></iframe>
-</div>
-
-<script>
-    function openGame(url) {
-        document.getElementById('game-frame').src = url;
-        document.getElementById('overlay').style.display = 'block';
-        document.body.style.overflow = 'hidden'; // Prevents background scrolling
-    }
-
-    function closeGame() {
-        document.getElementById('game-frame').src = '';
-        document.getElementById('overlay').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-</script>
+        // Emergency Escape Key
+        window.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") { panic(); }
+        });
+    </script>
 
 </body>
 </html>
